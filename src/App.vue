@@ -1,6 +1,10 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
+<template>
+  <AIBackground />
+  <!-- <AIFlower /> -->
+  <!-- <AIPlayer /> -->
+  <!-- <AIFlower /> -->
+</template>
 
-<template></template>
+<script setup>
+import AIBackground from './components/background/AIBackground.vue'
+</script>
