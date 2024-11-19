@@ -1,0 +1,297 @@
+.flower {
+  --flower-color: #ff00ff;
+  --bloom-size: 1.8;
+  --size: 5rem;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  display: flex;
+  opacity: 0.85;
+  width: var(--size);
+  flex-direction: column;
+  height: calc(var(--size) * 1.75);
+
+  &::before {
+    content: '';
+    transform: translateY(calc(var(--size) / var(--bloom-size)));
+    box-shadow: 0 0 var(--size) calc(var(--size) / var(--bloom-size))
+      color-mix(in srgb, var(--flower-color), transparent 65%);
+  }
+
+  .head {
+    aspect-ratio: 1 / 1;
+    position: relative;
+    margin: 0 auto;
+    width: 75%;
+
+    .leaf {
+      --leaf-color: var(--flower-color);
+      --bot-color: color-mix(in srgb, var(--leaf-color), black 30%);
+      --top-color: color-mix(in srgb, var(--leaf-color), white 35%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: absolute;
+      background: linear-gradient(
+        0deg,
+        var(--bot-color) 0%,
+        var(--top-color) 100%
+      );
+    }
+  }
+
+  &:is(.tulip) {
+    .head > .leaf {
+      &:nth-child(1) {
+        border-radius: 50% 50% 50% 50% / 75% 75% 25% 25%;
+      }
+
+      &:nth-child(2),
+      &:nth-child(3) {
+        --w: 60%;
+        --leaf-color: color-mix(in srgb, var(--flower-color), #333333 35%);
+        border-radius: 100% 0% 85% 15% / 100% 75% 25% 0%;
+        transform: scaleX(-1);
+        max-width: var(--w);
+      }
+
+      &:nth-child(2) {
+        --leaf-color: color-mix(in srgb, var(--flower-color), #333333 15%);
+        left: calc(100% - var(--w));
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  &:is(.chamomile) {
+    --bloom-size: 5;
+
+    .head {
+      position: relative;
+      justify-content: center;
+
+      .leaf {
+        border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+        box-shadow: 0 0 calc(var(--size) / var(--bloom-size))
+          calc(var(--size) / var(--bloom-size))
+          color-mix(in srgb, var(--flower-color), transparent 80%);
+
+        &:nth-child(1) {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: end;
+          position: relative;
+          justify-content: center;
+
+          &::before {
+            content: '';
+            width: 100%;
+            height: 45%;
+            opacity: 0.9;
+            border-radius: 50%;
+            position: absolute;
+            background-color: white;
+          }
+
+          &::after {
+            z-index: 1;
+            width: 70%;
+            content: '';
+            height: 35%;
+            opacity: 0.9;
+            border-radius: 50%;
+            background: radial-gradient(
+              circle,
+              rgba(255, 136, 0, 1) 0%,
+              rgba(255, 244, 0, 1) 100%
+            );
+          }
+        }
+
+        &:nth-child(2) {
+          z-index: -1;
+          width: 100%;
+          height: 100%;
+
+          &::before {
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: inherit;
+            border-radius: inherit;
+            transform: translate(-50%, 10%) rotateY(45deg) rotateX(50deg);
+            box-shadow: 0 0 calc(var(--size) / var(--bloom-size))
+              calc(var(--size) / var(--bloom-size))
+              color-mix(in srgb, var(--flower-color), transparent 80%);
+          }
+
+          &::after {
+            content: '';
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: inherit;
+            transform: translate(50%, 10%) rotateY(45deg) rotateX(-50deg);
+            box-shadow: 0 0 calc(var(--size) / var(--bloom-size))
+              calc(var(--size) / var(--bloom-size))
+              color-mix(in srgb, var(--flower-color), transparent 80%);
+          }
+        }
+
+        &:nth-child(3) {
+          z-index: 2;
+          width: 100%;
+          height: 25%;
+          opacity: 0.95;
+          position: absolute;
+          transform: translate(0%, 305%);
+          border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
+        }
+      }
+    }
+  }
+
+  .stem {
+    --stem-color: #1be400;
+
+    width: 8%;
+    flex-grow: 1;
+    opacity: 0.5;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 0 0 calc(var(--size) / 2) calc(var(--size) / 2);
+    background: linear-gradient(90deg, var(--stem-color) 0%, #333333 150%);
+
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      display: block;
+      box-shadow: 0 0 calc(var(--size) / 10) calc(var(--size) / 10)
+        color-mix(in srgb, var(--stem-color), transparent 80%);
+    }
+
+    .leaf {
+      top: 10%;
+      left: 50%;
+      width: 400%;
+      display: block;
+      position: absolute;
+      aspect-ratio: 1 / 1;
+      border-radius: 100% 0% 100% 0% / 100% 8% 92% 0%;
+      box-shadow: 0 0 calc(var(--size) / 10) calc(var(--size) / 17)
+        color-mix(in srgb, var(--stem-color), transparent 90%);
+
+      background: linear-gradient(
+        -45deg,
+        var(--stem-color) 25%,
+        color-mix(in srgb, var(--stem-color), #333333 25%) 50%,
+        var(--stem-color) 75%
+      );
+    }
+  }
+
+  &:is(.t1) {
+    .stem > .leaf {
+      &:nth-child(1) {
+        top: 50%;
+        transform: scaleX(-1);
+        left: -350%;
+      }
+
+      &:nth-child(2) {
+        top: 65%;
+      }
+
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+
+  &:is(.t2) {
+    .stem > .leaf {
+      &:nth-child(1) {
+        top: 15%;
+        transform: scaleX(-1);
+        left: -350%;
+      }
+
+      &:nth-child(2) {
+        top: 50%;
+      }
+
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+
+  &:is(.t3) {
+    .stem > .leaf {
+      &:nth-child(1) {
+        top: 15%;
+        transform: scaleX(-1);
+        left: -350%;
+      }
+
+      &:nth-child(2) {
+        top: 30%;
+      }
+
+      &:nth-child(3) {
+        top: 60%;
+        transform: scaleX(-1);
+        left: -350%;
+      }
+    }
+  }
+
+  &:is(.t4) {
+    .stem > .leaf {
+      &:nth-child(1) {
+        top: 15%;
+        transform: scaleX(-1);
+        left: -350%;
+      }
+
+      &:nth-child(2) {
+        top: 30%;
+      }
+
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+
+  &:is(.t5) {
+    display: flex;
+    .stem > .leaf {
+      &:nth-child(1) {
+        top: 15%;
+        transform: scaleX(-1);
+        left: -350%;
+      }
+
+      &:nth-child(2) {
+        top: 10%;
+        transform: scale(-1);
+      }
+
+      &:nth-child(3) {
+        top: 50%;
+      }
+    }
+  }
+}
+
+@keyframes balance {
+}

@@ -1,0 +1,23 @@
+@import './background.css';
+@import './flower.css';
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #111111;
+  height: 100dvh;
+  width: 100%;
+
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+
+  #app {
+    width: 100%;
+    height: 100%;
+  }
+}
