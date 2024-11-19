@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { useCloudStore } from '@/stores/clouds'
+import { useCloudStore } from '@/stores/cloud'
 import { rnd } from '@/util/util'
 import { onMounted } from 'vue'
 
