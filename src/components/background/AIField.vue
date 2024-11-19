@@ -46,7 +46,7 @@
 <script setup>
 import { useFieldStore } from '@/stores/field';
 import { onMounted, ref } from 'vue';
-import AIFLower from '../flower/AIFlower.vue';
+import AIFLower from '../AIFlower.vue';
 
 const flowerStore = useFieldStore()
 const leftBorder = ref([])
