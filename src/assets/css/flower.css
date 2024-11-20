@@ -157,6 +157,141 @@
     }
   }
 
+  &:is(.rose) {
+    top: 5rem;
+    left: 5rem;
+
+    .head {
+      .leaf {
+        &:nth-child(1) {
+          top: 5%;
+          height: 95%;
+          border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
+
+          &::before {
+            --bot-color: color-mix(in srgb, var(--leaf-color), black 50%);
+            --top-color: color-mix(in srgb, var(--leaf-color), white 20%);
+            content: '';
+            left: 0;
+            bottom: 0;
+            width: 75%;
+            height: 95%;
+            position: absolute;
+
+            transform-origin: bottom center;
+            transform: translateX(-5%);
+            background: linear-gradient(
+              0deg,
+              var(--bot-color) 0%,
+              var(--top-color) 100%
+            );
+            border-radius: 25% 75% 50% 50% / 0% 100% 0% 100%;
+          }
+
+          &::after {
+            --bot-color: color-mix(in srgb, var(--leaf-color), black 50%);
+            --top-color: color-mix(in srgb, var(--leaf-color), white 20%);
+            right: 0;
+            bottom: 0;
+            width: 75%;
+            height: 95%;
+            content: '';
+            position: absolute;
+            transform: translateX(5%);
+            transform-origin: bottom center;
+            background: linear-gradient(
+              0deg,
+              var(--bot-color) 0%,
+              var(--top-color) 100%
+            );
+            border-radius: 75% 25% 50% 50% / 100% 0% 100% 0%;
+          }
+        }
+
+        &:nth-child(2) {
+          --h: 85%;
+          --bot-color: color-mix(in srgb, var(--leaf-color), black 35%);
+          --top-color: color-mix(in srgb, var(--leaf-color), white 10%);
+          background: transparent;
+
+          &::before {
+            content: '';
+            bottom: 0;
+            width: 75%;
+            height: var(--h);
+            position: absolute;
+            transform: translateX(-15%) rotate(-5deg);
+            transform-origin: bottom right;
+            background: linear-gradient(
+              0deg,
+              var(--bot-color) 0%,
+              var(--top-color) 100%
+            );
+            border-radius: 50% 50% 25% 75% / 0% 100% 0% 100%;
+          }
+
+          &::after {
+            right: 0;
+            bottom: 0;
+            content: '';
+            width: 75%;
+            height: var(--h);
+            position: absolute;
+            transform: translate(15%) rotate(5deg);
+            transform-origin: bottom left;
+            background: linear-gradient(
+              0deg,
+              var(--bot-color) 0%,
+              var(--top-color) 100%
+            );
+            border-radius: 50% 50% 75% 25% / 100% 0% 100% 0%;
+          }
+        }
+
+        &:nth-child(3) {
+          --h: 75%;
+          --bot-color: color-mix(in srgb, var(--leaf-color), black 35%);
+          --top-color: var(--leaf-color);
+          background: transparent;
+
+          &::before {
+            content: '';
+            left: 0;
+            bottom: 0;
+            width: 75%;
+            height: var(--h);
+            position: absolute;
+            transform-origin: bottom center;
+            transform: translateX(-15%) rotate(-15deg);
+            background: linear-gradient(
+              0deg,
+              var(--bot-color) 0%,
+              var(--top-color) 100%
+            );
+            border-radius: 25% 75% 50% 50% / 0% 100% 0% 100%;
+          }
+
+          &::after {
+            right: 0;
+            bottom: 0;
+            width: 75%;
+            content: '';
+            height: var(--h);
+            position: absolute;
+            transform-origin: bottom center;
+            transform: translateX(15%) rotate(15deg);
+            background: linear-gradient(
+              0deg,
+              var(--bot-color) 0%,
+              var(--top-color) 100%
+            );
+            border-radius: 75% 25% 50% 50% / 100% 0% 100% 0%;
+          }
+        }
+      }
+    }
+  }
+
   .stem {
     --stem-color: #1be400;
 
