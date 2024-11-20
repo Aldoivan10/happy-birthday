@@ -1,6 +1,9 @@
 .flower {
   --flower-color: #ff00ff;
+  --anim-duration: 1s;
+  --grades-end: 10deg;
   --bloom-size: 1.8;
+  --grades-init: 0;
   --size: 5rem;
 
   position: absolute;
@@ -432,5 +435,12 @@
   }
 }
 
-@keyframes balance {
+@keyframes flower-balance {
+  from {
+    transform: rotate(var(--grades-init));
+  }
+
+  to {
+    transform: rotate(var(--grades-end));
+  }
 }
