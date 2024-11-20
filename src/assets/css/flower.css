@@ -30,8 +30,8 @@
       --leaf-color: var(--flower-color);
       --bot-color: color-mix(in srgb, var(--leaf-color), black 30%);
       --top-color: color-mix(in srgb, var(--leaf-color), white 35%);
-      top: 0;
       left: 0;
+      bottom: 0;
       width: 100%;
       height: 100%;
       display: flex;
@@ -75,14 +75,14 @@
       justify-content: center;
 
       .leaf {
+        width: 100%;
+        height: 100%;
         border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
         box-shadow: 0 0 calc(var(--size) / var(--bloom-size))
           calc(var(--size) / var(--bloom-size))
           color-mix(in srgb, var(--flower-color), transparent 80%);
 
         &:nth-child(1) {
-          width: 100%;
-          height: 100%;
           display: flex;
           align-items: end;
           position: relative;
@@ -115,8 +115,6 @@
 
         &:nth-child(2) {
           z-index: -1;
-          width: 100%;
-          height: 100%;
 
           &::before {
             content: '';
@@ -146,11 +144,8 @@
 
         &:nth-child(3) {
           z-index: 2;
-          width: 100%;
           height: 25%;
           opacity: 0.95;
-          position: absolute;
-          transform: translate(0%, 305%);
           border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
         }
       }
@@ -160,6 +155,20 @@
   &:is(.rose) {
     .head {
       .leaf {
+        &::after,
+        &::before {
+          bottom: 0;
+          content: '';
+          position: absolute;
+          transform-origin: bottom center;
+
+          background: linear-gradient(
+            0deg,
+            var(--bot-color) 0%,
+            var(--top-color) 100%
+          );
+        }
+
         &:nth-child(1) {
           top: 5%;
           height: 95%;
@@ -168,20 +177,9 @@
           &::before {
             --bot-color: color-mix(in srgb, var(--leaf-color), black 50%);
             --top-color: color-mix(in srgb, var(--leaf-color), white 20%);
-            content: '';
-            left: 0;
-            bottom: 0;
             width: 75%;
             height: 95%;
-            position: absolute;
-
-            transform-origin: bottom center;
             transform: translateX(-5%);
-            background: linear-gradient(
-              0deg,
-              var(--bot-color) 0%,
-              var(--top-color) 100%
-            );
             border-radius: 25% 75% 50% 50% / 0% 100% 0% 100%;
           }
 
@@ -189,58 +187,31 @@
             --bot-color: color-mix(in srgb, var(--leaf-color), black 50%);
             --top-color: color-mix(in srgb, var(--leaf-color), white 20%);
             right: 0;
-            bottom: 0;
             width: 75%;
             height: 95%;
-            content: '';
-            position: absolute;
             transform: translateX(5%);
-            transform-origin: bottom center;
-            background: linear-gradient(
-              0deg,
-              var(--bot-color) 0%,
-              var(--top-color) 100%
-            );
             border-radius: 75% 25% 50% 50% / 100% 0% 100% 0%;
           }
         }
 
         &:nth-child(2) {
-          --h: 85%;
+          --h: 80%;
           --bot-color: color-mix(in srgb, var(--leaf-color), black 35%);
           --top-color: color-mix(in srgb, var(--leaf-color), white 10%);
           background: transparent;
 
           &::before {
-            content: '';
-            bottom: 0;
             width: 75%;
             height: var(--h);
-            position: absolute;
             transform: translateX(-15%) rotate(-5deg);
-            transform-origin: bottom right;
-            background: linear-gradient(
-              0deg,
-              var(--bot-color) 0%,
-              var(--top-color) 100%
-            );
             border-radius: 50% 50% 25% 75% / 0% 100% 0% 100%;
           }
 
           &::after {
             right: 0;
-            bottom: 0;
-            content: '';
             width: 75%;
             height: var(--h);
-            position: absolute;
             transform: translate(15%) rotate(5deg);
-            transform-origin: bottom left;
-            background: linear-gradient(
-              0deg,
-              var(--bot-color) 0%,
-              var(--top-color) 100%
-            );
             border-radius: 50% 50% 75% 25% / 100% 0% 100% 0%;
           }
         }
@@ -252,36 +223,18 @@
           background: transparent;
 
           &::before {
-            content: '';
             left: 0;
-            bottom: 0;
             width: 75%;
             height: var(--h);
-            position: absolute;
-            transform-origin: bottom center;
             transform: translateX(-15%) rotate(-15deg);
-            background: linear-gradient(
-              0deg,
-              var(--bot-color) 0%,
-              var(--top-color) 100%
-            );
             border-radius: 25% 75% 50% 50% / 0% 100% 0% 100%;
           }
 
           &::after {
             right: 0;
-            bottom: 0;
             width: 75%;
-            content: '';
             height: var(--h);
-            position: absolute;
-            transform-origin: bottom center;
             transform: translateX(15%) rotate(15deg);
-            background: linear-gradient(
-              0deg,
-              var(--bot-color) 0%,
-              var(--top-color) 100%
-            );
             border-radius: 75% 25% 50% 50% / 100% 0% 100% 0%;
           }
         }
