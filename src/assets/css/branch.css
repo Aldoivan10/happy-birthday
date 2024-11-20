@@ -1,0 +1,29 @@
+.branch {
+  .flower {
+    transform-origin: bottom center;
+  }
+
+  &:is(.f2) {
+    .flower {
+      &:nth-child(1) {
+        transform: rotate(-20deg);
+      }
+
+      &:nth-child(2) {
+        transform: rotate(20deg);
+      }
+    }
+  }
+
+  &:is(.f3) {
+    .flower {
+      &:nth-child(1) {
+        transform: rotate(-35deg);
+      }
+
+      &:nth-child(2) {
+        transform: rotate(35deg);
+      }
+    }
+  }
+}
