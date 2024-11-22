@@ -3,6 +3,10 @@ export function rnd(min = 0, max = 1) {
   return +num.toFixed(2)
 }
 
+export function rndItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
 export function getSVG({
   type = 'svg',
   className,
