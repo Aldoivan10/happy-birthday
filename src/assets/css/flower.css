@@ -39,7 +39,7 @@
         &:nth-child(2) {
           width: 40%;
           height: 65%;
-          transform: rotate(-10deg) translate(-0.3em, -70%);
+          transform: rotate(-10deg) translate(5%, -70%);
         }
 
         &:nth-child(3) {
@@ -100,24 +100,24 @@
           height: 65%;
           content: '';
           position: absolute;
-          transform: rotate(5deg);
           border-top-left-radius: 50%;
           border-left: var(--grass-border);
           -webkit-mask-image: var(--grass-mask);
+          transform: rotate(5deg) translateY(-10%);
         }
 
         .leaf {
           width: 45%;
           height: 50%;
-          transform: rotate(-5deg);
           border-top-right-radius: 50%;
           border-right: var(--grass-border);
+          transform: rotate(-5deg) translate(-10%, 100%);
 
           &:nth-child(2) {
             width: 40%;
             height: 35%;
             border-top-left-radius: 100%;
-            transform: translateX(-1em) rotate(-10deg);
+            transform: translate(-10%, 50%) rotate(-10deg);
           }
 
           &:nth-child(3) {
@@ -127,7 +127,7 @@
             border-right: initial;
             border-top-left-radius: 100%;
             border-left: var(--grass-border);
-            transform: translateX(1em) rotate(10deg);
+            transform: translate(200%, -45%) rotate(10deg);
           }
         }
       }
@@ -151,15 +151,15 @@
         .leaf {
           width: 45%;
           height: 30%;
-          transform: rotate(-5deg);
           border-top-right-radius: 30%;
           border-right: var(--grass-border);
+          transform: rotate(-5deg) translate(-10%, 230%);
 
           &:nth-child(2) {
             width: 40%;
             height: 20%;
             border-top-left-radius: 100%;
-            transform: translateX(-1em) rotate(-10deg);
+            transform: translate(-10%, 250%) rotate(-10deg);
           }
 
           &:nth-child(3) {
@@ -169,7 +169,7 @@
             border-right: initial;
             border-top-left-radius: 80%;
             border-left: var(--grass-border);
-            transform: translateX(1em) rotate(10deg);
+            transform: translate(200%, 150%) rotate(10deg);
           }
         }
       }
@@ -179,6 +179,7 @@
       .stem > .leaf {
         width: 50%;
         height: 50%;
+        transform: translateY(100%);
         border-top-right-radius: 50%;
         border-right: var(--grass-border);
 
@@ -186,6 +187,7 @@
           width: 40%;
           height: 35%;
           transform: rotate(-10deg);
+          transform: translateY(50%);
         }
 
         &:nth-child(3) {
@@ -193,7 +195,7 @@
           width: 45%;
           height: 40%;
           border-right: initial;
-          transform: rotate(10deg);
+          transform: rotate(10deg) translate(115%, -75%);
           border-top-left-radius: 50%;
           border-left: var(--grass-border);
         }
