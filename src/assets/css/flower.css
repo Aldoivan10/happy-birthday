@@ -7,7 +7,6 @@
   --size: 5em;
 
   width: var(--size);
-  border: 1px solid white;
   transform-origin: bottom center;
 
   &:is(.grass) {
