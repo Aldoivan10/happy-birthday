@@ -4,13 +4,15 @@
     <!-- SVG para extras como cometas -->
     <AIStars />
     <div class="moon"></div>
-    <!-- <AIClouds /> -->
-    <!-- <AIMountains /> -->
+    <AIClouds />
+    <AIMountains />
     <AIField />
   </div>
 </template>
 
 <script setup>
+import AIClouds from './AIClouds.vue'
 import AIField from './AIField.vue'
+import AIMountains from './AIMountains.vue'
 import AIStars from './AIStars.vue'
 </script>

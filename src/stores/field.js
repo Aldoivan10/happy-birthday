@@ -11,9 +11,9 @@ export const useFieldStore = defineStore('field', () => {
     return mean + z * stdDev
   }
 
-  const fillPoints = ($svg, $path, points) => {
+  const fillPoints = ($svg, $path, points, offset) => {
     const svgMatrix = $svg.getScreenCTM()
-    const length = $path.getTotalLength()
+    const length = $path.getTotalLength() + offset
     const step = length / points
     const arrPoints = []
 
@@ -27,17 +27,15 @@ export const useFieldStore = defineStore('field', () => {
         point.x * svgMatrix.a + point.y * svgMatrix.c + svgMatrix.e
       const screenY =
         point.x * svgMatrix.b + point.y * svgMatrix.d + svgMatrix.f
-
       arrPoints.push({ x: screenX, y: screenY })
     }
 
     return arrPoints
   }
 
-  function getPoints($svg, target, min, max) {
-    const $path = $svg.querySelector(target)
+  function getPoints($svg, $path, min, max, i = 0) {
     const numPoints = rnd(min, max)
-    return fillPoints($svg, $path, numPoints)
+    return fillPoints($svg, $path, numPoints, 5 * i)
   }
 
   return { getPoints }

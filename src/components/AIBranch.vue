@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { rnd } from '@/util/util'
+import { rnd, rndItem } from '@/util/util'
 import { onMounted, ref } from 'vue'
 import AIFlower from './AIFlower.vue'
 
@@ -14,7 +14,7 @@ const $props = defineProps({
   size: { type: String, default: '2rem' },
 })
 
-const flowers = [
+const items = [
   'tulip',
   'tulip',
   'tulip',
@@ -23,21 +23,34 @@ const flowers = [
   'dalia',
   'chamomile',
   'chamomile',
+  'grass',
+  'grass',
 ]
 
 const content = ref([])
 const $branch = ref(document.createElement('div'))
 
-function init() {
+async function init() {
   const numFlowers = rnd(1, 3)
   const point = $props.point
-  $branch.value.className = `branch f${numFlowers}`
-  if (point)
-    $branch.value.style.transform = `translate(${point.x}px, calc(${point.y}px - ${$props.size} * 1.75))`
-  for (let f = 0; f < numFlowers; f++) {
-    const index = Math.floor(Math.random() * flowers.length)
-    content.value.push(flowers[index])
+  let flowers = []
+  if (point) {
+    const percentX = Math.floor((point.x / window.innerWidth) * 100)
+    const percentY = Math.floor((point.y / window.innerHeight) * 100)
+
+    $branch.value.style.left = `${percentX}%`
+    $branch.value.style.top = `calc(${percentY}% - ${$props.size} * var(--multiplier))`
   }
+  for (let f = 0; f < numFlowers; f++) {
+    const flower = rndItem(items)
+    flowers.push(flower)
+    if (flower == 'grass') {
+      flowers = [flower]
+      break
+    }
+  }
+  for (const flower of flowers) content.value.push(flower)
+  $branch.value.className = `branch f${flowers.length}`
 }
 
 onMounted(init)

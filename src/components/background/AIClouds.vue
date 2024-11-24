@@ -1,7 +1,6 @@
 <template>
   <div class="clouds">
     <svg
-      style="transform: rotate(0deg); transition: 0.3s"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1440 500"
       fill-opacity="0.08"
@@ -13,10 +12,7 @@
           <stop stop-color="#333333" offset="75%"></stop>
         </linearGradient>
       </defs>
-      <path
-        style="transform: translate(0, 0px); opacity: 1"
-        fill="url(#sw-gradient-0)"
-      ></path>
+      <path fill="url(#sw-gradient-0)"></path>
     </svg>
   </div>
 </template>
@@ -32,15 +28,12 @@ const init = () => {
   const numClouds = rnd(3, 5)
   const wrapper = document.querySelector('.clouds')
   const $cloud = wrapper.querySelector('svg')
-  let offset = 0
   for (let i = 0; i < numClouds; i++) {
     const $clone = $cloud.cloneNode(true)
     const $path = $clone.querySelector('path')
     $path.setAttribute('d', cloudStore.getPath())
-    $clone.style.top = `${offset}px`
     wrapper.appendChild($clone)
     cloudStore.setAnimation($path)
-    offset += rnd(10, 15)
   }
   $cloud.remove()
 }
@@ -50,13 +43,52 @@ onMounted(init)
 
 <style>
 .clouds {
-  position: absolute;
-  top: 10%;
-  left: 0;
-  right: 0;
+  position: relative;
+  width: 100%;
+  height: 0%;
 
   svg {
     position: absolute;
+    filter: drop-shadow(0 0 0.8rem white);
+
+    &:nth-child(2) {
+      transform: translateY(5%);
+    }
+
+    &:nth-child(3) {
+      transform: translateY(10%);
+    }
+
+    &:nth-child(4) {
+      transform: translateY(15%);
+    }
+
+    &:nth-child(5) {
+      transform: translateY(20%);
+    }
+  }
+
+  @media (width <= 600px) {
+    & > svg {
+      filter: drop-shadow(0 0 0.15rem white);
+      transform: translateY(210%);
+
+      &:nth-child(2) {
+        transform: translateY(230%);
+      }
+
+      &:nth-child(3) {
+        transform: translateY(250%);
+      }
+
+      &:nth-child(4) {
+        transform: translateY(270%);
+      }
+
+      &:nth-child(5) {
+        transform: translateY(290%);
+      }
+    }
   }
 }
 </style>

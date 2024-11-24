@@ -3,61 +3,152 @@
     <svg
       version="1.1"
       class="meadow"
-      viewBox="0 0 1440 175"
+      viewBox="0 0 500 500"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <linearGradient id="meadow-bg-1" x1="0" x2="0" y1="1" y2="0">
-        <
-        <stop stop-color="#222222" offset="50%"></stop>
-        <stop stop-color="#282828" offset="100%"></stop>
-      </linearGradient>
-      <linearGradient id="meadow-bg-2" x1="0" x2="0" y1="1" y2="0">
-        <stop stop-color="#222222" offset="30%"></stop>
-        <stop stop-color="#303030" offset="100%"></stop>
-      </linearGradient>
+      <defs>
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          x1="249.482"
+          y1="362.305"
+          x2="249.482"
+          y2="500.369"
+          id="gradient-0"
+          gradientTransform="matrix(0.991529, 0.129886, -0.077117, 0.588703, 40.700955, 173.395855)"
+          spreadMethod="pad"
+        >
+          <stop offset="0" style="stop-color: rgb(64, 64, 64)" />
+          <stop offset="1" style="stop-color: rgb(34, 34, 34)" />
+        </linearGradient>
+      </defs>
       <path
-        fill="url(#meadow-bg-1)"
-        d="M0,224L120,197.3C240,171,480,117,720,90.7C960,64,1200,64,1320,64L1440,64L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"
+        fill="url(#gradient-0)"
+        d="M-1 434s143 4 249 15c210 21 251 34 251 34l.0 18-502-.0-64Z"
       />
       <path
-        fill="url(#meadow-bg-2)"
-        d="M0,64L120,69.3C240,75,480,85,720,106.7C960,128,1200,160,1320,176L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"
+        fill="none"
+        class="left-guide"
+        d="M-1 434s143 4 249 15c210 21 251 34 251 34"
       />
       <path
-        class="guide-line left"
-        attr-level="1"
-        stroke="#FFFFFF"
-        fill="transparent"
-        d="m0 64 120 5.3c120 5.7 360 15.7 600 37.4 240 21.3 480 53.3 600 69.3l120 16"
+        fill="none"
+        class="left-guide"
+        d="M-1 444s143 4 249 15c210 21 251 34 251 34"
+      />
+      <path
+        fill="none"
+        class="left-guide"
+        d="M-1 454s143 4 249 15c210 21 251 34 251 34"
+      />
+      <path
+        fill="none"
+        class="left-guide"
+        d="M-1 464s143 4 249 15c210 21 251 34 251 34"
+      />
+      <path
+        fill="none"
+        class="left-guide"
+        d="M-1 474s143 4 249 15c210 21 251 34 251 34"
+      />
+      <path
+        fill="none"
+        class="left-guide"
+        d="M-1 484s143 4 249 15c210 21 251 34 251 34"
+      />
+      <path
+        fill="none"
+        class="left-guide"
+        d="M-1 494s143 4 249 15c210 21 251 34 251 34"
       />
     </svg>
     <div class="flowers">
-      <AIFLower size="10rem" type="chamomile"</AIFLower>
-      <AIFLower
-        v-for="{ x, y } in leftBorder"
-        :tx="x"
-        :ty="y"
-        type="chamomile"
+      <!-- <AIFlower type="grass" x="50px" y="50px" size="20rem" /> -->
+      <AIBranch
+        v-for="point in leftBranchs"
+        :point
+        ref="$lBranches"
+        size="clamp(0.5rem, 100dvh, 2rem)"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { useFieldStore } from '@/stores/field';
-import { onMounted, ref } from 'vue';
-import AIFLower from '../AIFlower.vue';
+import { useFieldStore } from '@/stores/field'
+import { rnd } from '@/util/util'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import AIBranch from '../AIBranch.vue'
 
 const flowerStore = useFieldStore()
-const leftBorder = ref([])
+const leftBranchs = ref([])
 
-function init() {
-  const $flowers = document.querySelector('.flowers')
+function getGrades($el) {
+  const computedStyle = window.getComputedStyle($el)
+  const transform = computedStyle.transform
+
+  // Si no hay transformación
+  if (transform === 'none') return 0
+
+  // Extraer la matriz de transformación
+  const matrix = transform.match(/matrix\((.+)\)/)[1].split(', ')
+  const a = parseFloat(matrix[0]) // Escala en x
+  const b = parseFloat(matrix[1]) // Sesgo en y
+
+  // Calcular el ángulo en radianes y convertir a grados
+  const radians = Math.atan2(b, a)
+  const degrees = radians * (180 / Math.PI)
+
+  // Asegurarse de que el ángulo esté en el rango [0, 360)
+  return degrees < 0 ? degrees + 360 : degrees
+}
+
+function setAnimation($el) {
+  const grades = getGrades($el)
+  const factor = 7
+  const init = grades || -factor
+  const end = grades > 0 ? -factor : factor
+  const duration = rnd(2, 5)
+  $el.style.setProperty('--grades-init', `${init}deg`)
+  $el.style.setProperty('--grades-end', `${grades + end}deg`)
+  $el.style.animation = `flower-balance ${duration}s infinite ease-in-out alternate-reverse`
+}
+
+const observer = new IntersectionObserver(
+  entries => {
+    for (const entry of entries) {
+      const $el = entry.target
+      if (entry.isIntersecting) setAnimation($el)
+      else $el.remove()
+    }
+  },
+  {
+    root: null, // Viewport
+    threshold: 0.05, // Parte visible (25% por defecto)
+  },
+)
+
+async function init() {
   const $svg = document.querySelector('.meadow')
-  leftBorder.value = flowerStore.getPoints($svg, '.guide-line', 30, 50)
+  const leftGuides = Array.from(document.querySelectorAll('.left-guide'))
+  const leftMax = Math.min(Math.ceil(window.innerWidth * 0.03), 60)
+  for (const i in leftGuides) {
+    leftBranchs.value.push(
+      ...flowerStore.getPoints(
+        $svg,
+        leftGuides[i],
+        Math.max(leftMax - 6, 4),
+        leftMax,
+        i,
+      ),
+    )
+  }
+  await nextTick()
+  const $flowers = document.querySelectorAll('.flower')
+  for (const $flower of $flowers) observer.observe($flower)
 }
 
 onMounted(init)
+onUnmounted(() => observer.disconnect())
 </script>
 
 <style>
@@ -65,14 +156,6 @@ onMounted(init)
   width: 100%;
   height: 100%;
   position: relative;
-
-  .point {
-    display: block;
-    width: 1rem;
-    height: 1rem;
-    background-color: red;
-    position: absolute;
-  }
 
   .flowers {
     width: 100%;
@@ -82,8 +165,15 @@ onMounted(init)
 
   .meadow {
     position: absolute;
-    width: 100vw;
+    width: 100%;
+    left: 0%;
     bottom: 0%;
+  }
+}
+
+@media (width <= 600px) {
+  .field > .meadow {
+    transform: scaleY(2) translateY(-25%);
   }
 }
 </style>
