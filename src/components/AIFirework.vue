@@ -149,6 +149,7 @@ function launch() {
   .shot {
     --color: rgb(255, 0, 0);
 
+    z-index: 1;
     font-family: 'Doto';
     user-select: none;
     pointer-events: none;
