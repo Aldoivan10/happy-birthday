@@ -1,7 +1,7 @@
 <template>
   <div class="bg-wrapper">
     <AIStars />
-    <AIPlayer />
+    <AIPlayer ref="$player" />
     <AIClouds />
     <AIMountains />
     <AIField ref="$field" />
@@ -18,6 +18,12 @@ import AIStars from './AIStars.vue'
 import { ref } from 'vue'
 
 const $field = ref(null)
+const $player = ref(null)
 
-defineExpose({ init: () => $field.value.init() })
+defineExpose({
+  init: () => {
+    $field.value.init()
+    $player.value.play()
+  },
+})
 </script>
