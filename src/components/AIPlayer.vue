@@ -78,7 +78,6 @@ watch(
         playsinline: 1,
         playlist: arr.join(),
         origin: window.location.origin,
-        autoplay: autoplay.value ? 1 : 0,
       },
       events: {
         onStateChange,
@@ -87,6 +86,12 @@ watch(
   },
   { once: true },
 )
+
+defineExpose({
+  play: () => {
+    if (autoplay.value) player.value?.playVideo()
+  },
+})
 </script>
 
 <style>
