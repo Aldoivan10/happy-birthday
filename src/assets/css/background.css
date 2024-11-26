@@ -1,9 +1,5 @@
 :root {
   --twinkle-duration: 4s;
-
-  --moon-size: 5rem;
-  --moon-color: #f5f5f5;
-  --halo-color: color-mix(in srgb, var(--moon-color), transparent 93%);
 }
 
 .bg-wrapper {
@@ -11,48 +7,7 @@
   height: 100%;
   overflow: hidden;
   position: absolute;
-  pointer-events: none;
   background: linear-gradient(#16161d, #271f3a, #232658);
-
-  .moon {
-    background-color: var(--moon-color);
-    height: var(--moon-size);
-    width: var(--moon-size);
-    border-radius: 50%;
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    box-shadow:
-      0 0 0 0.4em var(--halo-color),
-      0 0 0 0.8em var(--halo-color),
-      0 0 0 1.2em var(--halo-color);
-
-    &::before {
-      content: '';
-      border-radius: 50%;
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      box-shadow: 0 0 0 0 var(--halo-color);
-      animation: halo 3s ease-in-out infinite alternate-reverse;
-    }
-
-    &::after {
-      --crater-color: #e6e6e6;
-
-      background-color: var(--crater-color);
-      border-radius: 50%;
-      position: absolute;
-      height: 0.9em;
-      width: 0.9em;
-      left: 1.25em;
-      top: 3.75em;
-      content: '';
-      box-shadow:
-        0.9em -2.1em 0 0.2em var(--crater-color),
-        1.5em -0.3em 0 -0.06em var(--crater-color);
-    }
-  }
 
   .stars-wrapper {
     position: absolute;

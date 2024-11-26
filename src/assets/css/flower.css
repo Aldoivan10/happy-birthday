@@ -1,16 +1,19 @@
 .flower {
+  --h: calc(var(--size) * 1.75);
   --flower-color: #ff00ff;
   --stem-color: #1da00c;
-  --anim-duration: 1s;
-  --grades-end: 10deg;
-  --grades-init: 0;
   --size: 5em;
+  --x: 0;
+  --y: 0;
 
+  position: absolute;
   width: var(--size);
+  min-width: var(--size);
   transform-origin: bottom center;
+  transform: translate(var(--x), calc(var(--y) - var(--h)));
 
   &:is(.grass) {
-    height: var(--size);
+    --h: var(--size);
 
     .stem {
       --grass-border: clamp(0.35em, 0.1em + 0.5vmin, 0.5em) solid
@@ -208,7 +211,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: calc(var(--size) * 1.75);
+    height: var(--h);
 
     .head {
       --flower-filter: drop-shadow(var(--flower-color) 0 0 1.3rem);
@@ -588,15 +591,5 @@
     .stem {
       --grass-filter: drop-shadow(var(--stem-color) 0 0 0.1rem) !important;
     }
-  }
-}
-
-@keyframes flower-balance {
-  from {
-    transform: rotate(var(--grades-init));
-  }
-
-  to {
-    transform: rotate(var(--grades-end));
   }
 }

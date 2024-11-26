@@ -1,6 +1,6 @@
 .branch {
   --max-size: 2rem;
-  --multiplier: 1.65;
+  --multiplier: 1.75;
 
   position: absolute;
   max-width: fit-content;
