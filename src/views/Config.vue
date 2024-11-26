@@ -88,6 +88,7 @@
           <label>
             <input
               checked
+              name="fw"
               type="checkbox"
               @change="gs.switchRainbow($event, fireworksColors, '#F4493C')"
             />

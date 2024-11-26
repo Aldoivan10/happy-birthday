@@ -17,6 +17,18 @@ export const useGlobalStore = defineStore('global', () => {
     '#5D12E7',
     '#08BED5',
   ]
+  const rainbowFW = [
+    '#6b95ff',
+    '#ff837a',
+    '#ff6196',
+    '#eb7aff',
+    '#ffec41',
+    '#ffc30f',
+    '#8e4dfe',
+    '#58fe6b',
+    '#ff9029',
+    '#00e1ff',
+  ]
   const flowersColors = ref([])
   const apparitions = ref({
     tulip: { title: 'Tulipanes', value: 0 },
@@ -52,8 +64,9 @@ export const useGlobalStore = defineStore('global', () => {
   }
 
   function switchRainbow(evt, arr, def) {
+    const arrRainbow = evt.target.name == 'fw' ? rainbowFW : rainbow
     while (arr.length > 0) arr.pop()
-    if (evt.target.checked) arr.push(...rainbow)
+    if (evt.target.checked) arr.push(...arrRainbow)
     else arr.push(def)
   }
 
@@ -124,7 +137,6 @@ export const useGlobalStore = defineStore('global', () => {
       texts.value = JSON.parse(obj['texts'])
       flowersColors.value = JSON.parse(obj['flowersColors'])
       fireworksColors.value = JSON.parse(obj['fireworksColors'])
-
       playlist.value = songs.value.map(song => song.split('=')[1])
       if (random.value) {
         const [aux, ...rest] = playlist.value
