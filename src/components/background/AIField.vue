@@ -61,7 +61,7 @@
         d="M-1 494s143 4 249 15c210 21 251 34 251 34"
       />
     </svg>
-    <div class="flowers">
+    <div class="flowers" v-if="flowers.length">
       <AIFlower
         v-for="({ point, color, type }, i) in flowers"
         :key="i"
@@ -69,13 +69,8 @@
         :color
         :type
         size="clamp(0.5rem, 5dvh, 2rem)"
+        v-once
       />
-      <!-- <AIBranch
-        v-for="point in leftBranchs"
-        :point
-        ref="$lBranches"
-        size="clamp(0.5rem, 100dvh, 2rem)"
-      /> -->
     </div>
   </div>
 </template>
@@ -84,7 +79,7 @@
 import { useFieldStore } from '@/stores/field'
 import { useGlobalStore } from '@/stores/global'
 import { rnd, rndItem } from '@/util/util'
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { nextTick, onUnmounted, ref } from 'vue'
 import AIFlower from '../AIFlower.vue'
 
 const gs = useGlobalStore()
@@ -128,8 +123,6 @@ const observer = new IntersectionObserver(
 )
 
 async function init() {
-  await gs.load()
-
   const $svg = document.querySelector('.meadow')
   const guides = Array.from(document.querySelectorAll('.left-guide'))
   const numPoints = Math.min(Math.ceil(window.innerWidth * 0.035), 100)
@@ -155,7 +148,8 @@ async function init() {
   for (const $flower of $flowers) observer.observe($flower)
 }
 
-onMounted(init)
+defineExpose({ init })
+
 onUnmounted(() => observer.disconnect())
 </script>
 

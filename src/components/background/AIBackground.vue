@@ -4,7 +4,7 @@
     <AIPlayer />
     <AIClouds />
     <AIMountains />
-    <AIField />
+    <AIField ref="$field" />
   </div>
 </template>
 
@@ -14,4 +14,10 @@ import AIClouds from './AIClouds.vue'
 import AIField from './AIField.vue'
 import AIMountains from './AIMountains.vue'
 import AIStars from './AIStars.vue'
+
+import { ref } from 'vue'
+
+const $field = ref(null)
+
+defineExpose({ init: () => $field.value.init() })
 </script>
