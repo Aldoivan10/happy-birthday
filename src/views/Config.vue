@@ -132,6 +132,10 @@
             <input name="random" :checked="random" type="checkbox" />
             Aleatorio
           </label>
+          <label>
+            <input name="autoplay" :checked="autoplay" type="checkbox" />
+            Rep. auto
+          </label>
           <span class="btn-group">
             <button type="button" @click="gs.mutateArr(songs, '')">+</button>
             <button
@@ -158,8 +162,15 @@ import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 
 const gs = useGlobalStore()
-const { flowersColors, apparitions, texts, fireworksColors, songs, random } =
-  storeToRefs(gs)
+const {
+  flowersColors,
+  apparitions,
+  texts,
+  fireworksColors,
+  songs,
+  random,
+  autoplay,
+} = storeToRefs(gs)
 
 onMounted(async () => await gs.load())
 </script>
