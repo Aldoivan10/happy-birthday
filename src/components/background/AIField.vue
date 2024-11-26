@@ -125,7 +125,7 @@ const observer = new IntersectionObserver(
 async function init() {
   const $svg = document.querySelector('.meadow')
   const guides = Array.from(document.querySelectorAll('.left-guide'))
-  const numPoints = Math.min(Math.ceil(window.innerWidth * 0.035), 100)
+  const numPoints = Math.min(Math.ceil(window.innerWidth * 0.043), 100)
 
   for (const i in guides) {
     const points = flowerStore.getPoints(
