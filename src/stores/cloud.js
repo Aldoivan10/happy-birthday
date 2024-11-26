@@ -33,7 +33,7 @@ export const useCloudStore = defineStore('cloud', () => {
         { d: `path("${getPath()}")` },
       ],
       {
-        duration: rnd(10, 20) * 1000,
+        duration: rnd(5, 15) * 1000,
         iterations: Infinity,
         direction: 'alternate-reverse',
       },
