@@ -62,55 +62,55 @@
       />
     </svg>
     <div class="flowers">
-      <!-- <AIFlower type="grass" x="50px" y="50px" size="20rem" /> -->
-      <AIBranch
+      <AIFlower
+        v-for="({ point, color, type }, i) in flowers"
+        :key="i"
+        :point
+        :color
+        :type
+        size="clamp(0.5rem, 5dvh, 2rem)"
+      />
+      <!-- <AIBranch
         v-for="point in leftBranchs"
         :point
         ref="$lBranches"
         size="clamp(0.5rem, 100dvh, 2rem)"
-      />
+      /> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { useFieldStore } from '@/stores/field'
-import { rnd } from '@/util/util'
+import { useGlobalStore } from '@/stores/global'
+import { rnd, rndItem } from '@/util/util'
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
-import AIBranch from '../AIBranch.vue'
+import AIFlower from '../AIFlower.vue'
 
+const gs = useGlobalStore()
 const flowerStore = useFieldStore()
-const leftBranchs = ref([])
-
-function getGrades($el) {
-  const computedStyle = window.getComputedStyle($el)
-  const transform = computedStyle.transform
-
-  // Si no hay transformación
-  if (transform === 'none') return 0
-
-  // Extraer la matriz de transformación
-  const matrix = transform.match(/matrix\((.+)\)/)[1].split(', ')
-  const a = parseFloat(matrix[0]) // Escala en x
-  const b = parseFloat(matrix[1]) // Sesgo en y
-
-  // Calcular el ángulo en radianes y convertir a grados
-  const radians = Math.atan2(b, a)
-  const degrees = radians * (180 / Math.PI)
-
-  // Asegurarse de que el ángulo esté en el rango [0, 360)
-  return degrees < 0 ? degrees + 360 : degrees
-}
+const flowers = ref([])
 
 function setAnimation($el) {
-  const grades = getGrades($el)
-  const factor = 7
-  const init = grades || -factor
-  const end = grades > 0 ? -factor : factor
+  const init = rnd(3, 7) * (rnd(0, 1) ? 1 : -1)
+  const end = rnd(3, 7) * (init < 0 ? 1 : -1)
   const duration = rnd(2, 5)
-  $el.style.setProperty('--grades-init', `${init}deg`)
-  $el.style.setProperty('--grades-end', `${grades + end}deg`)
-  $el.style.animation = `flower-balance ${duration}s infinite ease-in-out alternate-reverse`
+
+  $el.animate(
+    [
+      {
+        transform: `translate(var(--x), calc(var(--y) - var(--h))) rotate(${init}deg)`,
+      },
+      {
+        transform: `translate(var(--x), calc(var(--y) - var(--h))) rotate(${end}deg)`,
+      },
+    ],
+    {
+      iterations: Infinity,
+      duration: duration * 1000,
+      direction: 'alternate-reverse',
+    },
+  )
 }
 
 const observer = new IntersectionObserver(
@@ -128,20 +128,28 @@ const observer = new IntersectionObserver(
 )
 
 async function init() {
+  await gs.load()
+
   const $svg = document.querySelector('.meadow')
-  const leftGuides = Array.from(document.querySelectorAll('.left-guide'))
-  const leftMax = Math.min(Math.ceil(window.innerWidth * 0.03), 60)
-  for (const i in leftGuides) {
-    leftBranchs.value.push(
-      ...flowerStore.getPoints(
-        $svg,
-        leftGuides[i],
-        Math.max(leftMax - 6, 4),
-        leftMax,
-        i,
-      ),
+  const guides = Array.from(document.querySelectorAll('.left-guide'))
+  const numPoints = Math.min(Math.ceil(window.innerWidth * 0.035), 100)
+
+  for (const i in guides) {
+    const points = flowerStore.getPoints(
+      $svg,
+      guides[i],
+      Math.max(numPoints - 6, 4),
+      numPoints,
+      i,
     )
+    for (const point of points) {
+      const color = rndItem(gs.flowersColors)
+      const type = rndItem(gs.flowerFrecuency)
+
+      flowers.value.push({ point, color, type })
+    }
   }
+
   await nextTick()
   const $flowers = document.querySelectorAll('.flower')
   for (const $flower of $flowers) observer.observe($flower)
@@ -164,9 +172,9 @@ onUnmounted(() => observer.disconnect())
   }
 
   .meadow {
+    transform: scaleX(1.2);
     position: absolute;
     width: 100%;
-    left: 0%;
     bottom: 0%;
   }
 }
