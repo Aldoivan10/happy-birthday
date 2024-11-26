@@ -25,3 +25,13 @@ export function getSVG({
   if (fill) svg.setAttribute('fill', fill)
   return svg
 }
+
+export function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    // Generar un índice aleatorio entre 0 e i
+    const randomIndex = Math.floor(Math.random() * (i + 1))
+    // Intercambiar los elementos en las posiciones i y randomIndex
+    ;[array[i], array[randomIndex]] = [array[randomIndex], array[i]]
+  }
+  return array
+}
