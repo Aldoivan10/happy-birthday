@@ -1,11 +1,13 @@
 <template>
-  <div class="firework" @click="launch">
+  <div ref="$fwCanvas" class="fw-canvas">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 175 500"
+      @click="launch"
       version="1.2"
       height="300"
       width="150"
+      ref="$firework"
     >
       <path fill="white" d="m41.2 118.7v257.4h85.9v-257.4z" />
       <path fill="#f7931e" d="m41.2 166.7v79l85.9-34.9v-79z" />
@@ -18,34 +20,134 @@
       <path fill="white" d="m88.2 515.4h-8v-124.5h8z" />
       <path fill="white" d="m116 434.1h-8v-43.2h8z" />
     </svg>
-    <div class="shot">
-      <span>!Feliz cumpleaños!</span>
-    </div>
   </div>
 </template>
 
 <script setup>
 import sound from '@/assets/firework.mp3'
+import { useGlobalStore } from '@/stores/global'
+import { rnd, rndItem } from '@/util/util'
+import { ref } from 'vue'
+
+const gs = useGlobalStore()
+
+const $fwCanvas = ref(document.createElement('div'))
+const $firework = ref(document.createElement('div'))
+
+function getInitialPoint(svgElement, point, angleInDegrees) {
+  // Obtener el bounding rect del SVG
+  const boundingRect = svgElement.getBoundingClientRect()
+
+  // Extraer el viewBox del SVG
+  const viewBox = svgElement.viewBox.baseVal
+  const scaleX = boundingRect.width / viewBox.width
+  const scaleY = boundingRect.height / viewBox.height
+
+  // Coordenadas escaladas del punto (desde el viewBox al tamaño real en la pantalla)
+  const scaledX = point.x * scaleX
+  const scaledY = point.y * scaleY
+
+  // Centro del SVG en coordenadas absolutas de la pantalla
+  const centerX = boundingRect.left + boundingRect.width / 2
+  const centerY = boundingRect.top + boundingRect.height / 2
+
+  // Coordenadas originales en el sistema global
+  const originalX = boundingRect.left + scaledX
+  const originalY = boundingRect.top + scaledY
+
+  // Convertir ángulo a radianes
+  const angleInRadians = (angleInDegrees * Math.PI) / 180
+
+  // Aplicar la rotación
+  const rotatedX =
+    centerX +
+    (originalX - centerX) * Math.cos(angleInRadians) -
+    (originalY - centerY) * Math.sin(angleInRadians)
+  const rotatedY =
+    centerY +
+    (originalX - centerX) * Math.sin(angleInRadians) +
+    (originalY - centerY) * Math.cos(angleInRadians)
+
+  return [rotatedX, rotatedY]
+}
+
+function getShot($canvas, $firework) {
+  const $shot = document.createElement('span')
+  const [x, y] = getInitialPoint($firework, { x: 80, y: 30 }, -30)
+  const color = rndItem(gs.fireworksColors)
+  const text = rndItem(gs.texts)
+  const grades = rnd(-30, 30)
+
+  $shot.classList.add('shot')
+  $shot.style.top = `${y}px`
+  $shot.style.left = `${x}px`
+  $shot.innerHTML = `<span>${text}</span>`
+  $shot.style.setProperty('--color', color)
+  $shot.style.transform = `rotate(${grades}deg)`
+
+  $canvas.append($shot)
+  return $shot
+}
+
+function initShot($canvas, $shot) {
+  const { width, height } = $canvas.getBoundingClientRect()
+  const fontSize = rnd(1, 2)
+  const offset = 50
+  const time = 1.6
+
+  const targetX = rnd(offset, width - offset)
+  const targetY = rnd(offset * 2, height - offset * 2)
+
+  $shot.style.transition = `left ${time}s cubic-bezier(0.25, 0.25, 0.25, 1), top ${time}s cubic-bezier(0.25, 0.25, 0.25, 1), background-color 0.2s linear 1.6s`
+  $shot.style.backgroundColor = 'initial'
+  $shot.style.left = `${targetX}px`
+  $shot.style.top = `${targetY}px`
+
+  $shot
+    .animate([{ fontSize: 0 }, { fontSize: `${fontSize}rem` }], {
+      duration: 0.3 * 1000,
+      easing: 'ease-in',
+      fill: 'forwards',
+      delay: 1.9 * 1000,
+    })
+    .finished.then(() => {
+      $shot
+        .animate(
+          [
+            { opacity: 1, top: `${targetY}px` },
+            { opacity: 0, top: `${targetY + 10}px` },
+          ],
+          {
+            duration: 3 * 1000,
+            easing: 'ease-in',
+            fill: 'forwards',
+          },
+        )
+        .finished.then(() => {
+          $shot.remove()
+        })
+    })
+}
 
 function launch() {
   const audio = new Audio(sound)
+  const $shot = getShot($fwCanvas.value, $firework.value)
+  initShot($fwCanvas.value, $shot)
   audio.play()
 }
 </script>
 
 <style>
-.firework {
-  cursor: pointer;
-  position: relative;
-  width: fit-content;
-  transform: translateX(45%) rotateZ(-25deg);
+.fw-canvas {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  overflow: hidden;
+  position: absolute;
 
   .shot {
     --color: rgb(255, 0, 0);
-    --end-x: -120%;
-    --end-y: -120%;
-    --end-font: 5rem;
-    --rot: 45deg;
 
     font-family: 'Doto';
     user-select: none;
@@ -61,42 +163,27 @@ function launch() {
     height: 0.5rem;
     width: 0.5rem;
     display: grid;
-    left: 43%;
-    top: 5%;
 
     text-align: center;
     animation: show-firework 2s ease-in forwards;
 
     & > span {
+      width: 17rem;
       position: absolute;
     }
   }
 
-  @media (width <= 600px) {
-    transform: translateX(45%) rotateZ(-25deg) scale(0.6);
-  }
-}
+  svg {
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    position: absolute;
+    height: clamp(10%, 50dvh, 25%);
+    transform: translateX(30%) rotateZ(-30deg);
 
-@keyframes show-firework {
-  0% {
-    transform: rotate(var(--rot));
-    left: 45%;
-    top: 5%;
-  }
-
-  80% {
-    background-color: transparent;
-    font-size: 0rem;
-    top: var(--end-y);
-    left: var(--end-x);
-  }
-
-  100% {
-    transform: rotate(var(--rot));
-    background-color: transparent;
-    font-size: var(--end-font);
-    top: var(--end-y);
-    left: var(--end-x);
+    @media (width <= 600px) {
+      transform: translateX(45%) rotateZ(-30deg);
+    }
   }
 }
 </style>
