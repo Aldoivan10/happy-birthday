@@ -21,7 +21,7 @@ const $emit = defineEmits(['loadFlowers', 'startSong'])
 
 function startAnimation(evt) {
   const $btn = evt.target
-  $btn.disabled = true
+
   $emit('loadFlowers')
   $btn
     .animate([{ opacity: 1, opacity: 0 }], { duration: 0.3 * 1000 })
