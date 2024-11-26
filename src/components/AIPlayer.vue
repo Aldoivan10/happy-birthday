@@ -11,9 +11,9 @@
         />
       </svg>
       <svg
+        @click="playing ? player?.pauseVideo() : player?.playVideo()"
         :class="{ play: !playing, pause: playing }"
         xmlns="http://www.w3.org/2000/svg"
-        @click="playing = !playing"
         viewBox="0 0 384 512"
       >
         <path />
@@ -42,33 +42,46 @@ const { playlist, autoplay } = storeToRefs(gs)
 const playing = ref(false)
 const player = ref(null)
 
-function onReady() {
-  console.log(autoplay.value)
-  if (autoplay.value) playing.value = true
-}
-
 function change(next) {
   if (next) player.value.nextVideo()
   else player.value.previousVideo()
 }
 
-watch(playing, isPlaying => {
-  if (isPlaying) player.value.playVideo()
-  else player.value.pauseVideo()
-})
+function onStateChange(evt) {
+  switch (evt.data) {
+    case YT.PlayerState.ENDED:
+      playing.value = false
+      break
+    case YT.PlayerState.PLAYING:
+      playing.value = true
+      break
+    case YT.PlayerState.PAUSED:
+      playing.value = false
+      break
+    case YT.PlayerState.BUFFERING:
+      playing.value = false
+      break
+    default:
+      console.log('Estado desconocido: ', evt.data)
+  }
+}
+
 watch(
   playlist,
   arr => {
     player.value = new YT.Player('player', {
       videoId: arr[0],
       playerVars: {
-        playlist: arr.join(),
-        autoplay: autoplay.value ? 1 : 0,
-        controls: 0,
         loop: 1,
+        controls: 0,
         enablejsapi: 1,
         playsinline: 1,
+        playlist: arr.join(),
         origin: window.location.origin,
+        autoplay: autoplay.value ? 1 : 0,
+      },
+      events: {
+        onStateChange,
       },
     })
   },
