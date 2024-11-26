@@ -1,10 +1,3 @@
 <template>
-  <AIBackground />
-  <!-- <AIFlower /> -->
-  <!-- <AIPlayer /> -->
-  <!-- <AIFlower /> -->
+  <RouterView />
 </template>
-
-<script setup>
-import AIBackground from './components/background/AIBackground.vue'
-</script>
