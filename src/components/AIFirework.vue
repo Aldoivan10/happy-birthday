@@ -144,12 +144,13 @@ function launch() {
   width: 100%;
   height: 90%;
   overflow: hidden;
+  user-select: none;
   position: absolute;
 
   .shot {
     --color: rgb(255, 0, 0);
 
-    z-index: 1;
+    z-index: 2;
     font-family: 'Doto';
     user-select: none;
     pointer-events: none;
