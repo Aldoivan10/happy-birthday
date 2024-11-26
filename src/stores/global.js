@@ -1,4 +1,5 @@
 import { supabase } from '@/util/db'
+import { shuffleArray } from '@/util/util'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -25,9 +26,11 @@ export const useGlobalStore = defineStore('global', () => {
     grass: { title: 'Pasto', value: 0 },
   })
   const texts = ref([])
-  const songs = ref([]) //'https://www.youtube.com/watch?v=u-_0fkY9FhI'
+  const songs = ref([])
+  const playlist = ref([])
   const logged = ref(false)
   const random = ref(false)
+  const autoplay = ref(true)
   const fireworksColors = ref([...rainbow])
 
   const flowerFrecuency = computed(() => getFrecuency(apparitions.value))
@@ -81,10 +84,12 @@ export const useGlobalStore = defineStore('global', () => {
     }, {})
 
     const newRandom = $form.querySelector('input[name=random]').checked
+    const newAutoplay = $form.querySelector('input[name=autoplay]').checked
 
     const { error } = await supabase
       .from('Configuration')
       .update({
+        autoplay: newAutoplay,
         random: newRandom,
         songs: JSON.stringify(newSongs),
         texts: JSON.stringify(newTexts),
@@ -113,11 +118,19 @@ export const useGlobalStore = defineStore('global', () => {
         apparitions.value[key].value = frecuency[key]
       }
 
-      random.value = JSON.parse(obj['random'])
       songs.value = JSON.parse(obj['songs'])
+      autoplay.value = JSON.parse(obj['autoplay'])
+      random.value = JSON.parse(obj['random'])
       texts.value = JSON.parse(obj['texts'])
       flowersColors.value = JSON.parse(obj['flowersColors'])
       fireworksColors.value = JSON.parse(obj['fireworksColors'])
+
+      playlist.value = songs.value.map(song => song.split('=')[1])
+      if (random.value) {
+        const [aux, ...rest] = playlist.value
+        if (aux == 'u-_0fkY9FhI') playlist.value = [aux, ...shuffleArray(rest)]
+        else shuffleArray(playlist.value)
+      }
     }
   }
 
@@ -131,6 +144,8 @@ export const useGlobalStore = defineStore('global', () => {
     flowerFrecuency,
     flowersColors,
     apparitions,
+    playlist,
+    autoplay,
     random,
     logged,
     texts,

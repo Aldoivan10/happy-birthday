@@ -27,7 +27,7 @@ export const useFieldStore = defineStore('field', () => {
         point.x * svgMatrix.a + point.y * svgMatrix.c + svgMatrix.e
       const screenY =
         point.x * svgMatrix.b + point.y * svgMatrix.d + svgMatrix.f
-      arrPoints.push({ x: screenX, y: screenY })
+      arrPoints.push({ x: Math.round(screenX), y: Math.round(screenY) })
     }
 
     return arrPoints
