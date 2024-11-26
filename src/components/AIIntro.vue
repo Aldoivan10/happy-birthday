@@ -1,6 +1,8 @@
 <template>
   <div ref="$intro" class="intro">
-    <button @click="startAnimation" class="outline contrast">Comenzar</button>
+    <button @click.prevent.stop="startAnimation" class="outline contrast">
+      Comenzar
+    </button>
     <img :src="gif" alt="intro" />
   </div>
 </template>

@@ -93,22 +93,22 @@ function initShot($canvas, $shot) {
   const { width, height } = $canvas.getBoundingClientRect()
   const fontSize = rnd(1, 2)
   const offset = 50
-  const time = 1.6
+  const time = 1.5
 
   const targetX = rnd(offset, width - offset)
   const targetY = rnd(offset * 2, height - offset * 2)
 
-  $shot.style.transition = `left ${time}s cubic-bezier(0.25, 0.25, 0.25, 1), top ${time}s cubic-bezier(0.25, 0.25, 0.25, 1), background-color 0.2s linear 1.6s`
+  $shot.style.transition = `left ${time}s cubic-bezier(0.25, 0.25, 0.25, 1), top ${time}s cubic-bezier(0.25, 0.25, 0.25, 1), background-color 0.2s linear ${time}s`
   $shot.style.backgroundColor = 'initial'
   $shot.style.left = `${targetX}px`
   $shot.style.top = `${targetY}px`
 
   $shot
     .animate([{ fontSize: 0 }, { fontSize: `${fontSize}rem` }], {
-      duration: 0.3 * 1000,
+      duration: 0.4 * 1000,
       easing: 'ease-in',
       fill: 'forwards',
-      delay: 1.9 * 1000,
+      delay: time * 1000,
     })
     .finished.then(() => {
       $shot
@@ -118,7 +118,7 @@ function initShot($canvas, $shot) {
             { opacity: 0, top: `${targetY + 10}px` },
           ],
           {
-            duration: 3 * 1000,
+            duration: 3.5 * 1000,
             easing: 'ease-in',
             fill: 'forwards',
           },
@@ -132,8 +132,8 @@ function initShot($canvas, $shot) {
 function launch() {
   const audio = new Audio(sound)
   const $shot = getShot($fwCanvas.value, $firework.value)
-  initShot($fwCanvas.value, $shot)
   audio.play()
+  initShot($fwCanvas.value, $shot)
 }
 </script>
 
