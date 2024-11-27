@@ -34,7 +34,7 @@ function startAnimation(evt) {
     $intro.value.style.setProperty('--mask', `url(${overlay})`)
     setTimeout(
       () => $intro.value.style.setProperty('--bg', 'initial'),
-      0.2 * 1000,
+      0.5 * 1000,
     )
     setTimeout(() => $intro.value.remove(), 6.8 * 1000)
   }, 6 * 1000)
